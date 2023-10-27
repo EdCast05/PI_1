@@ -117,9 +117,9 @@ def UserForGenre(genero: str):
     return dicc'''
 
 @app.get("/UserForGenre/")
-def obtener_informacion_por_genero(genero: str, data_file: str = 'data/df_endpoint4.parquet'):
+def obtener_informacion_por_genero(genero: str):
     # Cargar la base de datos
-    df = pd.read_parquet(data_file)
+    df = pd.read_parquet('data/df_endpoint4.parquet')
 
     # Filtrar el DataFrame para el género especificado
     df_genero = df[df['genres'] == genero]
