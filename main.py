@@ -117,21 +117,32 @@ def UserForGenre(genero: str):
     return dicc'''
 
 @app.get("/UserForGenre/")
-def UserForGenre(genero: str):
+def obtener_informacion_por_genero(genero: str, data_file: str = 'data/df_endpoint4.parquet'):
     # Cargar la base de datos
-    df = pd.read_parquet('data/df_endpoint4.parquet')
+    df = pd.read_parquet(data_file)
 
-    # Filtrar el DataFrame por género
-    df = df[df['genres'] == genero]
+    # Filtrar el DataFrame para el género especificado
+    df_genero = df[df['genres'] == genero]
 
-    # Obtener el usuario con más tiempo de juego
-    usuario = df.loc[df['playtime_forever'].idxmax()]['user_id']
+    # Agrupar por 'user_id' y sumar 'playtime_forever'
+    cantidad = df_genero.groupby('user_id')['playtime_forever'].sum().reset_index()
 
-    # Obtener el tiempo de juego por año para el usuario
-    poranio = df[df['user_id'] == usuario].groupby('anio')['playtime_forever'].sum()
+    # Encontrar al usuario con la máxima cantidad de playtime
+    usuario_max_playtime = cantidad.loc[cantidad['playtime_forever'].idxmax()]['user_id']
 
-    # Devolver el resultado
-    return {'usuario': usuario, 'años': poranio.to_dict()}
+    # Filtrar el DataFrame original por usuario y género
+    df_usuario_genero = df[(df['genres'] == genero) & (df['user_id'] == usuario_max_playtime)]
+
+    # Agrupar por año y sumar el tiempo de juego
+    poranio = df_usuario_genero.groupby('anio')['playtime_forever'].sum().to_dict()
+
+    # Crear un diccionario con la información
+    dicc = {
+        'usuario': usuario_max_playtime,
+        'años': poranio
+    }
+
+    return dicc
 
 @app.get("/best_developer_year/")
 def best_developer_year(año: int):
