@@ -170,7 +170,7 @@ def recomendacion(juego:str):
     with open('data/Matriz.pkl', 'rb') as file:
         modelo = joblib.load(file)
 
-    data = pd.read_parquet('data/df_endpoint6.parquet')
+    data = pd.read_parquet('data/df_prueba.parquet')
 
     def get_recommendations(app_name, cosine_sim=modelo ):
         idx = data[data['app_name'] == app_name].index[0]
