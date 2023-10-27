@@ -96,7 +96,7 @@ def userdata(user_id: str):
     return {'Respuesta': dicc}
 
 
-@app.get("/UserForGenre/")
+'''@app.get("/UserForGenre/")
 def UserForGenre(genero: str):
     # Cargar la base de datos
     df = pd.read_parquet('data/df_endpoint4.parquet')
@@ -114,7 +114,24 @@ def UserForGenre(genero: str):
     dicc['usuario'] = usuario
     dicc['años'] = poranio["playtime_forever"]
     
-    return dicc
+    return dicc'''
+
+@app.get("/UserForGenre/")
+def UserForGenre(genero: str):
+    # Cargar la base de datos
+    df = pd.read_parquet('data/df_endpoint4.parquet')
+
+    # Filtrar el DataFrame por género
+    df = df[df['genres'] == genero]
+
+    # Obtener el usuario con más tiempo de juego
+    usuario = df.loc[df['playtime_forever'].idxmax()]['user_id']
+
+    # Obtener el tiempo de juego por año para el usuario
+    poranio = df[df['user_id'] == usuario].groupby('anio')['playtime_forever'].sum()
+
+    # Devolver el resultado
+    return {'usuario': usuario, 'años': poranio.to_dict()}
 
 @app.get("/best_developer_year/")
 def best_developer_year(año: int):
