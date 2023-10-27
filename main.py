@@ -121,6 +121,10 @@ def obtener_informacion_por_genero(genero: str):
     # Cargar la base de datos
     df = pd.read_parquet('data/df_endpoint4.parquet')
 
+    if genero not in df['genres'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+
+
     # Filtrar el DataFrame para el género especificado
     df_genero = df[df['genres'] == genero]
 
@@ -149,6 +153,9 @@ def best_developer_year(año: int):
 
     df = pd.read_parquet('data/df_endpoint5.parquet')
 
+    if año not in df['anio'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+
     cantidad = df[(df['anio'] == año)].groupby('developer').count()
     cantidad.reset_index(inplace=True)
 
@@ -171,6 +178,10 @@ def recomendacion(juego:str):
         modelo = joblib.load(file)
 
     data = pd.read_parquet('data/df_prueba.parquet')
+
+    if juego not in data['app_name'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+
 
     def get_recommendations(app_name, cosine_sim=modelo ):
         idx = data[data['app_name'] == app_name].index[0]
