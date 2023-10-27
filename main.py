@@ -167,7 +167,7 @@ def best_developer_year(año: int):
 @app.get("/prediccion")
 def recomendacion(juego:str):
     # Cargar el modelo entrenado desde el archivo pickle
-    with open('data/Mejor_pipeline.pkl', 'rb') as file:
+    with open('data/Matriz.pkl', 'rb') as file:
         modelo = joblib.load(file)
 
     data = pd.read_parquet('data/df_endpoint6.parquet')
