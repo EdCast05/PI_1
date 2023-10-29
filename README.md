@@ -7,8 +7,9 @@ Este repositorio contiene un conjunto de funciones y un modelo de machine learni
 - [Introducción](#introducción)
 - [Configuración](#configuración)
 - [Uso](#uso)
-- [Sistema de Recomendación](#modelo)
-- [Licencia](#licencia)
+- [Sistema de recomendación](#modelo)
+- [Contacto](#contacto)
+- [Tecnologías utilizadas](#tecnologías)
 
 # Configuración
 1. Clona este repositorio en tu sistema local.
@@ -30,8 +31,8 @@ Una vez tu servidor de FastAPI esté funcionando podrás usar las siguientes fun
 
 NOTA: También puedes usar las funciones accediendo al enlace https://api1-vmeg.onrender.com/docs, que corresponde a la API deployada en Render.
 
-# Sistema de Recomendación
-El sistema de recomendación utiliza un modelo de machine learning basado 
+# Sistema de recomendación
+El sistema de recomendación utiliza un modelo de machine learning basado en similitud de contenido, el cual usa las características de los ítems para generar recomendaciones personalizadas.
 
 1. Elementos del Modelo:
 
@@ -45,4 +46,10 @@ El sistema de recomendación utiliza un modelo de machine learning basado
 
    - Cálculo de Similitud: Se calcula la similitud entre los ítems en función de las características extraídas. La similitud del coseno es una medida común que se utiliza para determinar cuán similares son dos ítems. Cuanto más cercano a 1 sea el valor del coseno, mayor será la similitud entre los ítems.
 
-   - Generación de Recomendaciones: Una vez que se obtiene la matriz de similitud, se pueden generar recomendaciones para un juego específico y recomendando otros juegos con alta similitud a ese ítem.
+   - Generación de Recomendaciones: Una vez que se obtiene la matriz de similitud, se pueden generar recomendaciones para un juego específico, devolviendo otros juegos con alta similitud al ítem dado.
+
+# Contacto
+Eduar A. Castañeda Molina
+
+# Tecnologías utilizadas
+Python | Pandas | Matplotlib | Seaborn | Scikit-Learn | FastAPI | Render
