@@ -75,6 +75,32 @@ def userdata(user_id: str):
     return dicc
 
 
+@app.get("/UserForGenre")
+def UserForGenre(genero: str):
+    # Cargar la base de datos
+    df = pd.read_parquet('data/df_endpoint4.parquet')
+
+    if genero not in df['genres'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
+
+    df_genero = df[df['genres'] == genero]
+
+    cantidad = df_genero.groupby('user_id')['playtime_forever'].sum().reset_index()
+
+    usuario_max_playtime = cantidad.loc[cantidad['playtime_forever'].idxmax()]['user_id']
+
+    df_usuario_genero = df[(df['genres'] == genero) & (df['user_id'] == usuario_max_playtime)]
+
+    poranio = df_usuario_genero.groupby('anio')['playtime_forever'].sum().to_dict()
+
+    dicc = {
+        'Usuario con más horas jugadas para {genero}': usuario_max_playtime,
+        'Horas jugadas': poranio
+    }
+
+    return dicc
+
+
 @app.get("/sentiment")
 def developer_reviews_analysis(desarrollador: str):
 
@@ -104,31 +130,6 @@ def developer_reviews_analysis(desarrollador: str):
     return dicc
 
 
-
-@app.get("/UserForGenre/")
-def obtener_informacion_por_genero(genero: str):
-    # Cargar la base de datos
-    df = pd.read_parquet('data/df_endpoint4.parquet')
-
-    if genero not in df['genres'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
-
-    df_genero = df[df['genres'] == genero]
-
-    cantidad = df_genero.groupby('user_id')['playtime_forever'].sum().reset_index()
-
-    usuario_max_playtime = cantidad.loc[cantidad['playtime_forever'].idxmax()]['user_id']
-
-    df_usuario_genero = df[(df['genres'] == genero) & (df['user_id'] == usuario_max_playtime)]
-
-    poranio = df_usuario_genero.groupby('anio')['playtime_forever'].sum().to_dict()
-
-    dicc = {
-        'usuario': usuario_max_playtime,
-        'años': poranio
-    }
-
-    return dicc
 
 @app.get("/best_developer_year/")
 def best_developer_year(año: int):
