@@ -101,6 +101,33 @@ def UserForGenre(genero: str):
     return dicc
 
 
+@app.get("/best_developer_year")
+def best_developer_year(año: int):
+
+    # Leo la data
+    df = pd.read_parquet('data/df_endpoint5.parquet')
+
+    # Valido si el año existe
+    if año not in df['anio'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+
+    # Filtro por año y agrupo por desarrollador
+    cantidad = df[(df['anio'] == año)].groupby('developer').count()
+    cantidad.reset_index(inplace=True)
+
+    # Ordeno de mayor a menor
+    cantidad = cantidad.sort_values(by='anio', ascending=False)
+    cantidad = cantidad[['developer','anio']]
+    
+    primeros_tres = cantidad.iloc[:3]
+    dicc = {}
+    dicc['Primer puesto'] = primeros_tres.iloc[0]['developer']
+    dicc['Segundo puesto'] = primeros_tres.iloc[1]['developer']
+    dicc['Tercer puesto'] = primeros_tres.iloc[2]['developer']
+   
+    return dicc
+
+
 @app.get("/sentiment")
 def developer_reviews_analysis(desarrollador: str):
 
@@ -129,29 +156,6 @@ def developer_reviews_analysis(desarrollador: str):
 
     return dicc
 
-
-
-@app.get("/best_developer_year/")
-def best_developer_year(año: int):
-
-    df = pd.read_parquet('data/df_endpoint5.parquet')
-
-    if año not in df['anio'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
-
-    cantidad = df[(df['anio'] == año)].groupby('developer').count()
-    cantidad.reset_index(inplace=True)
-
-    cantidad = cantidad.sort_values(by='anio', ascending=False)
-    cantidad = cantidad[['developer','anio']]
-
-    cantidad.set_index('developer', inplace=True)
-    cantidad.columns = ['Cantidad']
-
-    primeros_tres = cantidad.iloc[:3]
-    dicc = primeros_tres.to_dict()
-
-    return dicc
 
 
 @app.get("/prediccion")
