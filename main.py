@@ -94,7 +94,7 @@ def UserForGenre(genero: str):
     poranio = df_usuario_genero.groupby('anio')['playtime_forever'].sum().to_dict()
 
     dicc = {
-        'Usuario con más horas jugadas para {genero}': usuario_max_playtime,
+        f'Usuario con más horas jugadas para {genero}': usuario_max_playtime,
         'Horas jugadas': poranio
     }
 
