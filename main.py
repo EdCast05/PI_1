@@ -9,34 +9,35 @@ app = FastAPI()
 def home():
     return {"Message": "Bienvenido a mi API de recomendación de videojuegos de la plataforma Steam"}
 
-@app.get("/developer/")
+@app.get("/developer")
 def developer(desarrollador: str):
-    
-    # Cargar la base de datos
+    # Leo la data
     df = pd.read_parquet('data/df_endpoint1.parquet')
 
+    # Valido si el valor ingresado existe
     if desarrollador not in df['developer'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
 
-
+    # Filtro para el total de juegos y juegos_free
     cantidad = df[df['developer'] == desarrollador].groupby('anio').count()
     cantidad_free = df[(df['developer'] == desarrollador) & (df['price'] == 0.0)].groupby('anio').count()
 
+    # Convierto a lista
     cantidad_juegos = cantidad['developer'].tolist()
     cantidad_juegos_free = cantidad_free['developer'].tolist()
 
     anio = cantidad.index.tolist()
     anio_free = cantidad_free.index.tolist()
 
+    # Creo el diccionario con la información requerida
     porc_cont_free = {}
-
     for i in range(len(anio)):
         if anio[i] not in anio_free:
-            porc_cont_free[anio[i]] = [cantidad_juegos[i],"0%"]
+            porc_cont_free[anio[i]] = {'Cantidad de Items': cantidad_juegos[i], 'Contenido Free': "0%"}
         else:
             for j in range(len(anio_free)):
                 if anio_free[j]==anio[i]:
-                    porc_cont_free[anio[i]] = [cantidad_juegos[i], f'{round(cantidad_juegos_free[j]/cantidad_juegos[i]*100,2)}%']
+                    porc_cont_free[anio[i]] = {'Cantidad de Items': cantidad_juegos[i], 'Contenido Free': f'{round(cantidad_juegos_free[j]/cantidad_juegos[i]*100,2)}%'}
     
     return {f'Respuesta para {desarrollador}': porc_cont_free}
 
