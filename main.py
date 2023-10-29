@@ -42,29 +42,33 @@ def developer(desarrollador: str):
     return {f'Respuesta para {desarrollador}': porc_cont_free}
 
 
-@app.get("/sentiment/")
-def developer_reviews_analysis(desarrolladora: str):
+@app.get("/sentiment")
+def developer_reviews_analysis(desarrollador: str):
 
-    # Cargar la base de datos
+    # Leo los datos
     df = pd.read_parquet('data/df_endpoint2.parquet')
 
-    if desarrolladora not in df['developer'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
-
-    reviews = df[(df['developer'] == desarrolladora)].groupby('sentiment_analysis').count()
+    # Valido si el valor ingresado existe
+    if desarrollador not in df['developer'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
     
+    # Filtro para el developer y agrupo por sentimiento
+    reviews = df[(df['developer'] == desarrollador)].groupby('sentiment_analysis').count()
+    
+    # Convierto a lista
     cantidad_reviews = reviews['developer'].tolist()
 
     negativos = str(cantidad_reviews[0])
-    negativos = 'Negativos: ' + negativos
+    negativos = 'Negativos = ' + negativos
 
     positivos = str(cantidad_reviews[1])
-    positivos = 'Positivos: ' + positivos
+    positivos = 'Positivos = ' + positivos
 
+    # Creo el diccionario con la información requerida
     dicc = {}
-    dicc[desarrolladora] = [negativos,positivos]
+    dicc[desarrollador] = [negativos,positivos]
 
-    return {f'Respuesta para {desarrolladora}': dicc}
+    return dicc
 
 
 @app.get("/userdata/")
