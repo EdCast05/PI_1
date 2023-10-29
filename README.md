@@ -27,4 +27,4 @@ Una vez tu servidor de FastAPI esté funcionando podrás usar las siguientes fun
 * `/best_developer_year/`: Obtendrás el top 3 de desarrolladores con juegos más recomendados por los usuarios para el año dado.
 * `/sentiment/`: Obtendrás la cantidad total de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo, dada una empresa desarrolladora.
 * `/prediccion`: Dado un id de juego, obtendrás una lista con 5 juegos recomendados, similares al juego ingresado.
-
+NOTA: También puedes usar las funciones accediendo al enlace https://api1-vmeg.onrender.com/docs, que corresponde a la API deployada en Render.
