@@ -1,6 +1,9 @@
-fastapi
 fastparquet
-pandas
-uvicorn
 pyarrow
+fastapi
+uvicorn
 joblib
+pandas
+
+
+
