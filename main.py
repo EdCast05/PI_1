@@ -42,6 +42,39 @@ def developer(desarrollador: str):
     return {f'Respuesta para {desarrollador}': porc_cont_free}
 
 
+@app.get("/userdata")
+def userdata(user_id: str):
+    # Cargar la base de datos
+    df = pd.read_parquet('data/df_endpoint3.parquet')
+
+    # Verifico si el usuario existe
+    if user_id not in df['user_id'].tolist():
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
+
+    # Filtro por userd_id 
+    cantidad = df[(df['user_id'] == user_id)].groupby('recommend').count()
+    dinero = df[(df['user_id'] == user_id)].groupby('price').count()
+
+    # Guardo el dinero gastado
+    spent = dinero.index.tolist()
+    spent = [float(value) for value in spent]
+
+    recommend = cantidad.index.tolist()
+
+    # Guardo la cantidad de juegos que posee el usuario
+    cantidad_items_recom = cantidad['item_id'].tolist()
+
+    if len(recommend) == 1:
+        if recommend[0] == 'true':
+            dicc = {"Usuario": user_id, "Dinero gastado": f'${round(sum(spent),2)}', "% de recomendación": f'100%', "cantidad de items": sum(cantidad_items_recom)}
+        else:
+            dicc = {"Usuario": user_id, "Dinero gastado": f'${round(sum(spent),2)}', "% de recomendación": f'0%', "cantidad de items": sum(cantidad_items_recom)} 
+    else:
+        dicc = {"Usuario": user_id, "Dinero gastado": f'${round(sum(spent),2)}', "% de recomendación": f'{round(cantidad_items_recom[1]/sum(cantidad_items_recom)*100,2)}%', "cantidad de items": sum(cantidad_items_recom)}
+
+    return dicc
+
+
 @app.get("/sentiment")
 def developer_reviews_analysis(desarrollador: str):
 
@@ -70,35 +103,6 @@ def developer_reviews_analysis(desarrollador: str):
 
     return dicc
 
-
-@app.get("/userdata/")
-def userdata(user_id: str):
-    # Cargar la base de datos
-    df = pd.read_parquet('data/df_endpoint3.parquet')
-
-    if user_id not in df['user_id'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
-
-
-    cantidad = df[(df['user_id'] == user_id)].groupby('recommend').count()
-    dinero = df[(df['user_id'] == user_id)].groupby('price').count()
-
-    spent = dinero.index.tolist()
-    spent = [float(value) for value in spent]
-
-    recommend = cantidad.index.tolist()
-
-    cantidad_items_recom = cantidad['item_id'].tolist()
-
-    if len(recommend) == 1:
-        if recommend[0] == 'true':
-            dicc = {"Usuario": user_id, "Dinero gastado": f'${round(sum(spent),2)}', "% de recomendación": f'100%', "cantidad de items": sum(cantidad_items_recom)}
-        else:
-            dicc = {"Usuario": user_id, "Dinero gastado": f'${round(sum(spent),2)}', "% de recomendación": f'0%', "cantidad de items": sum(cantidad_items_recom)} 
-    else:
-        dicc = {"Usuario": user_id, "Dinero gastado": f'${round(sum(spent),2)}', "% de recomendación": f'{round(cantidad_items_recom[1]/sum(cantidad_items_recom)*100,2)}%', "cantidad de items": sum(cantidad_items_recom)}
-
-    return {'Respuesta': dicc}
 
 
 @app.get("/UserForGenre/")
