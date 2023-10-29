@@ -7,7 +7,7 @@ Este repositorio contiene un conjunto de funciones y un modelo de machine learni
 - [Introducción](#introducción)
 - [Configuración](#configuración)
 - [Uso](#uso)
-- [Sistema de recomendación](#modelo)
+- [Sistema de recomendación](#recomendación)
 - [Contacto](#contacto)
 - [Tecnologías utilizadas](#tecnologías)
 
@@ -22,11 +22,11 @@ Este repositorio contiene un conjunto de funciones y un modelo de machine learni
 
 # Uso
 Una vez tu servidor de FastAPI esté funcionando podrás usar las siguientes funciones:
-* `/developer/`: Obtendrás la cantidad de juegos creados y el porcentaje de contenido Free por año, dada una empresa desarrolladora.
-* `/userdata/`: Obtendrás la cantidad de dinero gastado para un usuario dado, y el porcentaje de recomendación de dicho usuario.
-* `/UserForGenre/`: Obtendrás el usuario que acumula más horas jugadas para el género dado, y una lista de la acumulación de horas jugadas por año de lanzamiento.
-* `/best_developer_year/`: Obtendrás el top 3 de desarrolladores con juegos más recomendados por los usuarios para el año dado.
-* `/sentiment/`: Obtendrás la cantidad total de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo, dada una empresa desarrolladora.
+* `/developer`: Dada una empresa desarrolladora, obtendrás la cantidad de juegos creados por año y el porcentaje de contenido Free por año.
+* `/userdata`: Dado un id de usuario, obtendrás la cantidad de dinero gastado y el porcentaje de recomendación de dicho usuario.
+* `/UserForGenre`: Dado un género, obtendrás el usuario que acumula más horas jugadas para ese género, y una lista de la acumulación de horas jugadas por año de lanzamiento.
+* `/best_developer_year`: Dado un año, obtendrás el top 3 de desarrolladores con juegos más recomendados por los usuarios para dicho año.
+* `/sentiment`: Dada una empresa desarrolladora, obtendrás la cantidad total de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo.
 * `/prediccion`: Dado un id de juego, obtendrás una lista con 5 juegos recomendados, similares al juego ingresado.
 
 NOTA: También puedes usar las funciones accediendo al enlace https://api1-vmeg.onrender.com/docs, que corresponde a la API deployada en Render.
@@ -52,6 +52,7 @@ NOTA: Por falta de recursos computacionales, se tomó una muestra aleatoria de 1
 
 # Contacto
 Eduar A. Castañeda Molina
+
 eduarcastanedam@gmail.com
 
 # Tecnologías utilizadas
