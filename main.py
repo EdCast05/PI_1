@@ -177,7 +177,7 @@ def recomendacion(juego:str):
     with open('data/Matriz.pkl', 'rb') as file:
         modelo = joblib.load(file)
 
-    data = pd.read_parquet('data/df_prueba.parquet')
+    data = pd.read_parquet('data/df_modelo.parquet')
 
     if juego not in data['app_name'].tolist():
         return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
@@ -187,8 +187,10 @@ def recomendacion(juego:str):
         idx = data[data['app_name'] == app_name].index[0]
         sim_scores = list(enumerate(cosine_sim[idx]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[1:6]  # Top 5 juegos similares
+        sim_scores = sim_scores[1:7]  # Top 5 juegos similares
         game_indices = [i[0] for i in sim_scores]
+        if idx in game_indices:
+            game_indices.remove(idx)
         return data['app_name'].iloc[game_indices]
 
 
