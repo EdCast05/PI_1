@@ -7,7 +7,7 @@ app = FastAPI()
 
 @app.get('/') #Endpoint
 def home():
-    return {"message": "Hola mundo FastAPI"}
+    return {"Message": "Bienvenido a mi API de recomendación de videojuegos de la plataforma Steam"}
 
 @app.get("/developer/")
 def developer(desarrollador: str):
@@ -16,7 +16,7 @@ def developer(desarrollador: str):
     df = pd.read_parquet('data/df_endpoint1.parquet')
 
     if desarrollador not in df['developer'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
 
 
     cantidad = df[df['developer'] == desarrollador].groupby('anio').count()
@@ -48,7 +48,7 @@ def developer_reviews_analysis(desarrolladora: str):
     df = pd.read_parquet('data/df_endpoint2.parquet')
 
     if desarrolladora not in df['developer'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
 
     reviews = df[(df['developer'] == desarrolladora)].groupby('sentiment_analysis').count()
     
@@ -72,7 +72,7 @@ def userdata(user_id: str):
     df = pd.read_parquet('data/df_endpoint3.parquet')
 
     if user_id not in df['user_id'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
 
 
     cantidad = df[(df['user_id'] == user_id)].groupby('recommend').count()
@@ -96,51 +96,24 @@ def userdata(user_id: str):
     return {'Respuesta': dicc}
 
 
-'''@app.get("/UserForGenre/")
-def UserForGenre(genero: str):
-    # Cargar la base de datos
-    df = pd.read_parquet('data/df_endpoint4.parquet')
-
-    cantidad = df[(df['genres'] == genero)].groupby('user_id').sum()
-    cantidad.reset_index(inplace=True)
-
-    usuario = cantidad.loc[cantidad['playtime_forever'].idxmax()]['user_id']
-
-    poranio = df[(df['genres'] == genero) & (df['user_id']==usuario)].groupby('anio').sum()
-    poranio.drop('item_id',axis=1,inplace=True)
-
-    poranio = poranio.to_dict()
-    dicc = {}
-    dicc['usuario'] = usuario
-    dicc['años'] = poranio["playtime_forever"]
-    
-    return dicc'''
-
 @app.get("/UserForGenre/")
 def obtener_informacion_por_genero(genero: str):
     # Cargar la base de datos
     df = pd.read_parquet('data/df_endpoint4.parquet')
 
     if genero not in df['genres'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
 
-
-    # Filtrar el DataFrame para el género especificado
     df_genero = df[df['genres'] == genero]
 
-    # Agrupar por 'user_id' y sumar 'playtime_forever'
     cantidad = df_genero.groupby('user_id')['playtime_forever'].sum().reset_index()
 
-    # Encontrar al usuario con la máxima cantidad de playtime
     usuario_max_playtime = cantidad.loc[cantidad['playtime_forever'].idxmax()]['user_id']
 
-    # Filtrar el DataFrame original por usuario y género
     df_usuario_genero = df[(df['genres'] == genero) & (df['user_id'] == usuario_max_playtime)]
 
-    # Agrupar por año y sumar el tiempo de juego
     poranio = df_usuario_genero.groupby('anio')['playtime_forever'].sum().to_dict()
 
-    # Crear un diccionario con la información
     dicc = {
         'usuario': usuario_max_playtime,
         'años': poranio
@@ -154,7 +127,7 @@ def best_developer_year(año: int):
     df = pd.read_parquet('data/df_endpoint5.parquet')
 
     if año not in df['anio'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
 
     cantidad = df[(df['anio'] == año)].groupby('developer').count()
     cantidad.reset_index(inplace=True)
@@ -180,7 +153,7 @@ def recomendacion(juego:str):
     data = pd.read_parquet('data/df_modelo.parquet')
 
     if juego not in data['app_name'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
 
 
     def get_recommendations(app_name, cosine_sim=modelo ):
