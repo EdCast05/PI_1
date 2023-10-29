@@ -48,8 +48,11 @@ El sistema de recomendación utiliza un modelo de machine learning basado en sim
 
    - Generación de Recomendaciones: Una vez que se obtiene la matriz de similitud, se pueden generar recomendaciones para un juego específico, devolviendo otros juegos con alta similitud al ítem dado.
 
+NOTA: Por falta de recursos computacionales, se tomó una muestra aleatoria de 10.000 juegos, ya que la matriz de similitud era demasiado pesada al generarse con los 30.000 juegos distintos que hay en el dataset original. Para testear la función puedes usar los juegos listados en el archivo [df_steam_games_selected.csv](./data/df_steam_games_selected.csv).
+
 # Contacto
 Eduar A. Castañeda Molina
+eduarcastanedam@gmail.com
 
 # Tecnologías utilizadas
 Python | Pandas | Matplotlib | Seaborn | Scikit-Learn | FastAPI | Render
