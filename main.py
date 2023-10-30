@@ -98,8 +98,8 @@ def UserForGenre(genero: str):
     poranio_dict = poranio.to_dict()
 
     dicc = {
-        "usuario": usuario,
-        "años": poranio_dict
+        f'Usuario con más horas jugadas para {genero}': usuario,
+        'Horas jugadas': poranio_dict
     }
 
     del poranio
