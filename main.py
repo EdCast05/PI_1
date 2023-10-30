@@ -101,6 +101,11 @@ def UserForGenre(genero: str):
         "años": poranio_dict
     }
 
+    del df
+    del genre_df
+    del usuario
+    del poranio
+
     return response_dict
 
 
