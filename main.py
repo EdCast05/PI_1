@@ -164,8 +164,8 @@ def developer_reviews_analysis(desarrollador: str):
 
 
 
-@app.get("/prediccion")
-def recomendacion(id_juego:int):
+@app.get("/recomendacion_juego")
+def recomendacion_juego(id_juego:int):
     # Cargar el modelo entrenado desde el archivo pickle
     with open('data/Matriz.pkl', 'rb') as file:
         modelo = joblib.load(file)
