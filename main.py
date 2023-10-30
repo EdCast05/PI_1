@@ -75,7 +75,7 @@ def userdata(user_id: str):
     return dicc
 
 
-@app.get("/UserForGenre/")
+@app.get("/UserForGenre")
 def UserForGenre(genero: str):
     # Load the database
     df = pd.read_parquet('data/df_endpoint4.parquet')
