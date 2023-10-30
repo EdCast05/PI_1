@@ -16,7 +16,7 @@ def developer(desarrollador: str):
 
     # Valido si el valor ingresado existe
     if desarrollador not in df['developer'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": f"No se encontraron resultados para {desarrollador}, verifique el valor ingresado."}
 
     # Filtro para el total de juegos y juegos_free
     cantidad = df[df['developer'] == desarrollador].groupby('anio').count()
@@ -49,7 +49,7 @@ def userdata(user_id: str):
 
     # Verifico si el usuario existe
     if user_id not in df['user_id'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada, verifica el valor consultado."}
+        return {"Respuesta": f"No se encontraron resultados para {user_id}, verifique el valor ingresado."}
 
     # Filtro por userd_id 
     cantidad = df[(df['user_id'] == user_id)].groupby('recommend').count()
@@ -77,37 +77,34 @@ def userdata(user_id: str):
 
 @app.get("/UserForGenre")
 def UserForGenre(genero: str):
-    # Load the database
+    # Leo la data
     df = pd.read_parquet('data/df_endpoint4.parquet')
 
     if genero not in df['genres'].values:
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": f"No se encontraron resultados para {genero}, verifique el valor ingresado."}
 
-    # Filter the DataFrame for the specified genre
+    # Filtro para el género
     genre_df = df[df['genres'] == genero]
 
     del df
 
-    # Find the user with the highest total playtime for the genre
+    # Hallo usuario con más horas de juego
     usuario = genre_df.groupby('user_id')['playtime_forever'].sum().idxmax()
 
-    # Calculate playtime by year for the selected user and genre
+    # Agrupo por usuario y sumo las horas de juego
     poranio = genre_df[genre_df['user_id'] == usuario].groupby('anio')['playtime_forever'].sum()
 
     del genre_df
-
-    # Convert the playtime by year to a dictionary
     poranio_dict = poranio.to_dict()
 
-    # Create the response dictionary
-    response_dict = {
+    dicc = {
         "usuario": usuario,
         "años": poranio_dict
     }
 
     del poranio
 
-    return response_dict
+    return dicc
 
 
 @app.get("/best_developer_year")
@@ -118,7 +115,7 @@ def best_developer_year(año: int):
 
     # Valido si el año existe
     if año not in df['anio'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": f"No se encontraron resultados para {año}, verifique el valor ingresado."}
 
     # Filtro por año y agrupo por desarrollador
     cantidad = df[(df['anio'] == año)].groupby('developer').count()
@@ -145,7 +142,7 @@ def developer_reviews_analysis(desarrollador: str):
 
     # Valido si el valor ingresado existe
     if desarrollador not in df['developer'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": f"No se encontraron resultados para {desarrollador}, verifique el valor ingresado."}
     
     # Filtro para el developer y agrupo por sentimiento
     reviews = df[(df['developer'] == desarrollador)].groupby('sentiment_analysis').count()
@@ -177,7 +174,7 @@ def recomendacion(id_juego:int):
 
     # Valido si el id existe en la muestra seleccionada
     if id_juego not in data['id'].tolist():
-        return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
+        return {"Respuesta": f"No se encontraron resultados para {id_juego}, verifique el valor ingresado."}
 
     # Defino función para obtener juegos similares
     def get_recommendations(app_name, cosine_sim=modelo ):
