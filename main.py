@@ -78,7 +78,7 @@ def userdata(user_id: str):
 @app.get("/UserForGenre/")
 def UserForGenre(genero: str):
     # Load the database
-    df = pd.read_parquet('data/df_endpoint4_prueba.parquet')
+    df = pd.read_parquet('data/df_endpoint4.parquet')
 
     if genero not in df['genres'].values:
         return {"Respuesta": "No se encontraron resultados para la búsqueda realizada"}
