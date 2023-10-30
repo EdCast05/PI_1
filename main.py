@@ -5,14 +5,14 @@ import joblib
 
 app = FastAPI()
 
-@app.get('/') #Endpoint
+@app.get('/') 
 def home():
     return {"Message": "Bienvenido a mi API de recomendación de videojuegos de la plataforma Steam"}
 
 @app.get("/developer")
 def developer(desarrollador: str):
     # Leo la data
-    df = pd.read_parquet('data/df_endpoint1.parquet')
+    df = pd.read_parquet('data/EP1.parquet')
 
     # Valido si el valor ingresado existe
     if desarrollador not in df['developer'].tolist():
@@ -45,7 +45,7 @@ def developer(desarrollador: str):
 @app.get("/userdata")
 def userdata(user_id: str):
     # Cargar la base de datos
-    df = pd.read_parquet('data/df_endpoint3.parquet')
+    df = pd.read_parquet('data/EP2.parquet')
 
     # Verifico si el usuario existe
     if user_id not in df['user_id'].tolist():
@@ -78,7 +78,7 @@ def userdata(user_id: str):
 @app.get("/UserForGenre")
 def UserForGenre(genero: str):
     # Leo la data
-    df = pd.read_parquet('data/df_endpoint4.parquet')
+    df = pd.read_parquet('data/EP3.parquet')
 
     if genero not in df['genres'].values:
         return {"Respuesta": f"No se encontraron resultados para {genero}, verifique el valor ingresado."}
@@ -111,7 +111,7 @@ def UserForGenre(genero: str):
 def best_developer_year(año: int):
 
     # Leo la data
-    df = pd.read_parquet('data/df_endpoint5.parquet')
+    df = pd.read_parquet('data/EP4.parquet')
 
     # Valido si el año existe
     if año not in df['anio'].tolist():
@@ -138,7 +138,7 @@ def best_developer_year(año: int):
 def developer_reviews_analysis(desarrollador: str):
 
     # Leo los datos
-    df = pd.read_parquet('data/df_endpoint2.parquet')
+    df = pd.read_parquet('data/EP5.parquet')
 
     # Valido si el valor ingresado existe
     if desarrollador not in df['developer'].tolist():
