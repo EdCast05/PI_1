@@ -86,11 +86,15 @@ def UserForGenre(genero: str):
     # Filter the DataFrame for the specified genre
     genre_df = df[df['genres'] == genero]
 
+    del df
+
     # Find the user with the highest total playtime for the genre
     usuario = genre_df.groupby('user_id')['playtime_forever'].sum().idxmax()
 
     # Calculate playtime by year for the selected user and genre
     poranio = genre_df[genre_df['user_id'] == usuario].groupby('anio')['playtime_forever'].sum()
+
+    del genre_df
 
     # Convert the playtime by year to a dictionary
     poranio_dict = poranio.to_dict()
@@ -101,9 +105,6 @@ def UserForGenre(genero: str):
         "años": poranio_dict
     }
 
-    del df
-    del genre_df
-    del usuario
     del poranio
 
     return response_dict
