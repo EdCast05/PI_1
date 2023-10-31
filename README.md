@@ -27,7 +27,7 @@ Una vez tu servidor de FastAPI esté funcionando podrás usar las siguientes fun
 * `/UserForGenre`: Dado un género, obtendrás el usuario que acumula más horas jugadas para ese género, y una lista de la acumulación de horas jugadas por año de lanzamiento.
 * `/best_developer_year`: Dado un año, obtendrás el top 3 de desarrolladores con juegos más recomendados por los usuarios para dicho año.
 * `/sentiment`: Dada una empresa desarrolladora, obtendrás la cantidad total de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo.
-* `/prediccion`: Dado un id de juego, obtendrás una lista con 5 juegos recomendados, similares al juego ingresado.
+* `/recomendacion_juego`: Dado un id de juego, obtendrás una lista con 5 juegos recomendados, similares al juego ingresado.
 
 **NOTA**: También puedes usar las funciones accediendo al enlace https://api1-vmeg.onrender.com/docs, que corresponde a la API deployada en Render.
 
